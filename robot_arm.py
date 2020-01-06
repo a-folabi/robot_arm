@@ -2,6 +2,9 @@ import gpiozero
 from time import sleep
 import pygame
 
+# The stepper motor moves in full steps. For this to work, the coils have to be 
+# energized in this order. 
+# I found this by looking at the stepper datasheet here: http://eeshop.unl.edu/pdf/Stepper+Driver.pdf
 StepCount = 8
 Seq = list(range(0, StepCount))
 Seq[0] = [1,0,0,0]
@@ -13,6 +16,9 @@ Seq[5] = [0,0,1,1]
 Seq[6] = [0,0,0,1]
 Seq[7] = [1,0,0,1]
 
+# I also adapted this persons code here: https://tutorials-raspberrypi.com/how-to-control-a-stepper-motor-with-raspberry-pi-and-l293d-uln2003a/
+# But I had to switch libraries because RPi.GPIO wasnt being maintained and I had issues connecting to the PI
+# finally, I created a class to simplify controlling multiple motors
 class motor:
     def __init__(self,a,b,c,d):
         self.coil_A_1 = gpiozero.DigitalOutputDevice(a)
@@ -57,9 +63,6 @@ class motor:
 
 if __name__ == '__main__':
     m1 = motor(2,3,4,14)
-    '''while True:
-        step = input("steps")
-        m1.backward(int(step))'''
     m2 = motor(15,18,17,27)
     pygame.init()
     if pygame.joystick.get_count() == 0:
