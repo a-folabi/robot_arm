@@ -64,6 +64,7 @@ class motor:
 if __name__ == '__main__':
     m1 = motor(2,3,4,14)
     m2 = motor(15,18,17,27)
+    m3 = motor(23,24,25,8)
     pygame.init()
     if pygame.joystick.get_count() == 0:
         print("No controller attached")
@@ -75,17 +76,27 @@ if __name__ == '__main__':
         while True:
             events = pygame.event.get()
             for event in events:
-                if event.type == pygame.JOYBUTTONDOWN and event.button == 0:
-                    j.quit()
-                    break
-                if event.axis == 1 and event.value != 0 and event.value > 0.1:
-                    m1.forward(1)
-                elif event.axis == 1 and event.value != 0 and event.value < 0.1:
-                    m1.backward(1)
-                if event.axis == 4 and event.value != 0 and event.value > 0.1:
-                    m2.forward(1)
-                elif event.axis == 4 and event.value != 0 and event.value < 0.1:
-                    m2.backward(1)
+                if event.type == pygame.JOYBUTTONDOWN:
+                    if event.button == 0:
+                        j.quit()
+                        exit()
+                    if event.button == 6:
+                        m3.forward(100)
+                    if event.button == 7:
+                        m3.backward(100)
+                    
+                if event.type == pygame.JOYAXISMOTION:
+                    if event.axis == 1 and event.value != 0 and event.value > 0.1:
+                        m1.forward(1)
+                    elif event.axis == 1 and event.value != 0 and event.value < 0.1:
+                        m1.backward(1)
+                    elif event.axis == 4 and event.value != 0 and event.value > 0.1:
+                        m2.forward(1)
+                    elif event.axis == 4 and event.value != 0 and event.value < 0.1:
+                        m2.backward(1)
+                
+                
+                
     except KeyboardInterrupt:
         print("EXITING NOW")
         j.quit()
